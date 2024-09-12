@@ -11,3 +11,9 @@ ECB: https://data.ecb.europa.eu/data/data-categories/ecbeurosystem-policy-and-ex
 World: https://www.kaggle.com/datasets/sazidthe1/global-inflation-data
 
 Europe: https://data.ecb.europa.eu/main-figures/inflation
+
+
+## Stock
+
+all stock csv files are retrieved from https://www.nasdaq.com/market-activity/quotes/historical
+unfortunately we only can access 10 years of data with a free based account
