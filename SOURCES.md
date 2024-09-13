@@ -19,3 +19,7 @@ all stock csv files are retrieved from https://www.nasdaq.com/market-activity/qu
 unfortunately we only can access 10 years of data with a free based account
 
 American Stock Index data: https://fred.stlouisfed.org/categories/32255
+
+American Stock Index data: https://www.kaggle.com/datasets/joebeachcapital/s-and-p500-index-stocks-daily-updated (from 1962)
+
+Multiple Stock Index data (USA, Germany, Japan etc.): https://www.kaggle.com/datasets/mattiuzc/stock-exchange-data
