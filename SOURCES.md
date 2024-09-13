@@ -17,3 +17,5 @@ Europe: https://data.ecb.europa.eu/main-figures/inflation
 
 all stock csv files are retrieved from https://www.nasdaq.com/market-activity/quotes/historical
 unfortunately we only can access 10 years of data with a free based account
+
+American Stock Index data: https://fred.stlouisfed.org/categories/32255
