@@ -25,3 +25,12 @@ For the inflation rate we could use forward fill, but maybe it will also be an i
 ## Data Validation
 
 ## Deployment and Optimization
+
+## What to do?
+- Remove/replace outliers
+- Compare to gold prices
+- Compare to Russell 2000
+- Compare to Brent Oil
+- Categorize macro data (example low, medium, high) and use in descision tree model
+- MP4 Supervised ML - What is the price if interest, infaltion, CPI etc. is X, y, z etc.
+- MP4 Clustering years/months
