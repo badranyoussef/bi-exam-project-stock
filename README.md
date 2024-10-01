@@ -4,7 +4,7 @@
 Title: Stock Price Prediction Based on Macroeconomic Factors
 
 ## Challenge:
-How do changes in macroeconomic factors, like interest rates and inflation, affect the stock market development, and how can we predict these changes using historical data?
+How does changes in macroeconomic factors, like interest rates and inflation, affect the stock market development, and how can we predict these changes using historical data?
 
 ## Importance:
 Macroeconomic changes have a direct impact on companies' borrowing costs and earnings, which in turn affect their stock prices. Being able to predict these changes can help investors make informed decisions and reduce market risks.
