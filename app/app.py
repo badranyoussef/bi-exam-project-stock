@@ -1,3 +1,3 @@
 import streamlit as st
 
-st.write("Hello world")
+st.markdown("# Can you predict the stock market?")
