@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import plotly.express as px
 
 # Set up the page
 st.markdown("# Data Exploration")
@@ -25,32 +26,7 @@ if uploaded_file is not None:
 
     # Check if Date column is present and if at least one column is selected for the Y-axis
     if 'Date' in df.columns and columns_to_plot:
-        # Create the figure and axis
-        fig, ax1 = plt.subplots(figsize=(10, 6))
-
-        # Plot the first selected column
-        ax1.set_xlabel('Date')
-        ax1.set_ylabel(columns_to_plot[0], color='tab:blue')
-        ax1.plot(df['Date'], df[columns_to_plot[0]], color='tab:blue', label=columns_to_plot[0])
-        ax1.tick_params(axis='y', labelcolor='tab:blue')
-
-        # Create additional y-axes for the second and third selected columns
-        if len(columns_to_plot) > 1:
-            ax2 = ax1.twinx()
-            ax2.set_ylabel(columns_to_plot[1], color='tab:red')
-            ax2.plot(df['Date'], df[columns_to_plot[1]], color='tab:red', label=columns_to_plot[1])
-            ax2.tick_params(axis='y', labelcolor='tab:red')
-
-        if len(columns_to_plot) > 2:
-            ax3 = ax1.twinx()
-            ax3.spines['right'].set_position(('outward', 60))  # Offset the third y-axis
-            ax3.set_ylabel(columns_to_plot[2], color='tab:green')
-            ax3.plot(df['Date'], df[columns_to_plot[2]], color='tab:green', label=columns_to_plot[2])
-            ax3.tick_params(axis='y', labelcolor='tab:green')
-
-        plt.title('Data Visualization')
-        fig.tight_layout()
-        st.pyplot(fig)
+        st.line_chart(df, x='Date', y=columns_to_plot)
     else:
         st.warning("Please ensure that the Date column is present and select at least one column for the Y-axis.")
 
@@ -63,20 +39,8 @@ if uploaded_file is not None:
         if len(box_plot_columns) > 3:
             st.warning("Please select up to 3 columns only.")
             box_plot_columns = box_plot_columns[:3]  # Take only the first 3
-
-        fig, axs = plt.subplots(1, len(box_plot_columns), figsize=(15, 6))
-        
-        # If only one column is selected, axs will not be an array
-        if len(box_plot_columns) == 1:
-            axs = [axs]  # Make it iterable
-
-        for ax, col in zip(axs, box_plot_columns):
-            sns.boxplot(x=df[col], ax=ax)
-            ax.set_title(f'Box Plot of {col}')
-            ax.set_xlabel(col)
-
-        plt.tight_layout()
-        st.pyplot(fig)
+        fig = px.box(df, y=box_plot_columns)
+        st.plotly_chart(fig, use_container_width=True)
 
     # Histogram
     st.write("### Histogram")
@@ -87,18 +51,6 @@ if uploaded_file is not None:
         if len(hist_columns) > 3:
             st.warning("Please select up to 3 columns only.")
             hist_columns = hist_columns[:3]  # Take only the first 3
-
-        fig, axs = plt.subplots(1, len(hist_columns), figsize=(15, 6))
-
-        # If only one column is selected, axs will not be an array
-        if len(hist_columns) == 1:
-            axs = [axs]  # Make it iterable
-
-        for ax, col in zip(axs, hist_columns):
-            ax.hist(df[col], bins=30, color='skyblue', edgecolor='black')
-            ax.set_title(f'Histogram of {col}')
-            ax.set_xlabel(col)
-            ax.set_ylabel('Frequency')
-
-        plt.tight_layout()
-        st.pyplot(fig)
+        
+        fig = px.histogram(df, x=hist_columns)
+        st.plotly_chart(fig, use_container_width=True)
