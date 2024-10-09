@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 from sklearn.preprocessing import MinMaxScaler
+from PIL import Image
 
 def normalize_data(df):
     # Initialize MinMaxScaler
@@ -75,3 +76,11 @@ if uploaded_file is not None:
         
         fig = px.histogram(df, x=hist_columns)
         st.plotly_chart(fig, use_container_width=True)
+
+st.subheader("Correlation Matrix for data frame")
+corr_matrix_img = Image.open("../app/images/Correlation.png")
+st.image(corr_matrix_img)
+
+st.subheader("Confusion Matrix for trained model")
+conf_matrix_img = Image.open("../app/images/confusion matrix.png")
+st.image(conf_matrix_img)
