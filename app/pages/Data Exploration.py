@@ -77,6 +77,7 @@ if uploaded_file is not None:
         fig = px.histogram(df, x=hist_columns)
         st.plotly_chart(fig, use_container_width=True)
 
+<<<<<<< Updated upstream
 st.subheader("Correlation Matrix for data frame")
 corr_matrix_img = Image.open("../app/images/Correlation.png")
 st.image(corr_matrix_img)
@@ -84,3 +85,19 @@ st.image(corr_matrix_img)
 st.subheader("Confusion Matrix for trained model")
 conf_matrix_img = Image.open("../app/images/confusion matrix.png")
 st.image(conf_matrix_img)
+=======
+
+    # TABS for Confusion Matrix and Correlation
+    st.write("### Additional Analysis")
+    tab1, tab2 = st.tabs(["Correlation Matrix", "Confusion Matrix"])
+
+    with tab1:
+        # Correlation matrix
+        st.write("### Correlation Matrix")
+        st.image('../app/images/Correlation.png')
+
+    with tab2:
+        # Placeholder for confusion matrix - requires actual and predicted labels
+        st.write("### Confusion Matrix")
+        st.image('../app/images/confusion matrix.png')
+>>>>>>> Stashed changes
