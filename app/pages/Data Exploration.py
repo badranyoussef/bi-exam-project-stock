@@ -3,6 +3,26 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
+from sklearn.preprocessing import MinMaxScaler
+
+def normalize_data(df):
+    # Initialize MinMaxScaler
+    scaler = MinMaxScaler()
+
+    # Extract 'Date' column and keep it separate
+    date_column = df['Date']
+
+    # Scale the rest of the columns except 'Date'
+    df_scaled = scaler.fit_transform(df.drop(columns=['Date']))
+
+    # Convert the scaled data back into a DataFrame
+    # Use the original column names except for 'Date'
+    df_scaled = pd.DataFrame(df_scaled, columns=df.drop(columns=['Date']).columns)
+
+    # Concatenate the 'Date' column back to the scaled DataFrame
+    df_scaled = pd.concat([date_column, df_scaled], axis=1)
+    
+    return df_scaled
 
 # Set up the page
 st.markdown("# Data Exploration")
@@ -20,15 +40,16 @@ if uploaded_file is not None:
     # Ensure 'Date' is a datetime object
     if 'Date' in df.columns:
         df['Date'] = pd.to_datetime(df['Date'])
+        df_scaled = normalize_data(df)
 
-    # Let users select columns for the y-axis
-    columns_to_plot = st.multiselect("Select columns to plot on Y-axis", df.columns.tolist(), default=df.columns[1:4])
+        # Let users select columns for the y-axis
+        columns_to_plot = st.multiselect("Select columns to plot on Y-axis", df_scaled.columns.tolist(), default=df_scaled.columns[1:4])
 
-    # Check if Date column is present and if at least one column is selected for the Y-axis
-    if 'Date' in df.columns and columns_to_plot:
-        st.line_chart(df, x='Date', y=columns_to_plot)
-    else:
-        st.warning("Please ensure that the Date column is present and select at least one column for the Y-axis.")
+        # Check if Date column is present and if at least one column is selected for the Y-axis
+        if 'Date' in df_scaled.columns and columns_to_plot:
+            st.line_chart(df_scaled, x='Date', y=columns_to_plot)  # Use df_scaled here
+        else:
+            st.warning("Please ensure that the Date column is present and select at least one column for the Y-axis.")
 
     # Box Plot
     st.write("### Box Plot")
