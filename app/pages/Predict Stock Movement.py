@@ -33,7 +33,7 @@ st.markdown('''
             ''')
 
 # Input feature values
-st.markdown("**What where the values the current month**")
+st.markdown("**Enter the known values:**")
 cpi = st.slider("Set CPI", 100, 1000, 110) # or use .number_input("Set CPI")
 
 if stock == "RUSSELL2000":
