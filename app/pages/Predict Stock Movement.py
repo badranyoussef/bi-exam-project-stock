@@ -7,7 +7,6 @@ def load_model(stock):
     model_mapping = {
         "SP500": '../models/dt_model_sp500.pkl',
         "RUSSELL2000": '../models/dt_model_russell2000.pkl',
-        #"C25": '../models/model_c25.pkl'
     }
     
     if stock in model_mapping:
@@ -19,9 +18,6 @@ def load_model(stock):
 
 # Function to get user input based on selected stock index
 def get_input_values(stock):
-    # if stock == "C25":
-    #     return get_c25_input()
-    # else:
     return get_other_stock_input(stock)
 
 def get_other_stock_input(stock):
@@ -39,24 +35,6 @@ def get_other_stock_input(stock):
         return np.array([[interest, unemployment, inflation, cpi, volume, flagged_value]])
     
     return np.array([[interest, unemployment, inflation, cpi, flagged_value]])
-
-# def get_c25_input():
-#     LAST_CLOSE_SP500 = st.slider("Set CLOSE value for SP500", 0, 6500, 5000)
-#     Open = st.slider("Set Open value for SP500", 0, 6500, 5000)
-#     High_sp500 = st.slider("Set HIGH value for SP500", 0, 6500, 5000)
-#     Low_sp500 = st.slider("Set LOW value for SP500", 0, 6500, 5000)
-#     CHANGE_SP500 = st.slider("Set CHANGE value for SP500", 0, 6500, 5000)
-
-#     LAST_CLOSE_C25 = st.slider("Set LAST CLOSE value for C25", 0, 6500, 5000)
-#     CHANGE_C25 = st.slider("Set CHANGE value for C25", 0, 6500, 5000)
-#     High_c25 = st.slider("Set HIGH value for C25", 0, 6500, 5000)
-#     Low_c25 = st.slider("Set LOW value for C25", 0, 6500, 5000)
-
-#     flagged = st.radio("Is the C25 stock rising in the current month?", ("Yes", "No"))
-#     flagged_value = 1 if flagged == "Yes" else 0
-
-#     return np.array([[LAST_CLOSE_SP500, Open, High_sp500, Low_sp500, CHANGE_SP500,
-#                       LAST_CLOSE_C25, CHANGE_C25, High_c25, Low_c25, flagged_value]])
 
 # Streamlit app starts here
 st.markdown("# Predict Market Movement")

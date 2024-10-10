@@ -29,10 +29,49 @@ def normalize_data(df):
 st.markdown("# Data Exploration")
 
 # Upload CSV file
+st.markdown("**Upload a file to explore the data**")
 uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
+
+# Select from our files
+file_list = {
+    'Oil prices':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/BrentOilPrices.csv',
+    'S&P 500 (original)':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/SP500-data.csv',
+    'S&P (cleaned)':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/df_sp500_cleaned.csv',
+    'Gold (cleaned)':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/cleaned_gold_data.csv',
+    'Gold (original)':'../app/data/XAU_USD Historical Data.xlsx',
+    'Interest Rate (cleaned)':'../app/data/interest_rate_2017_now_cleaned.xlsx',
+    'Interest Rate (original)':'../app/data/interest_rate_2017_now.xlsx',
+    'RUSSELL 2000':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/russell_2000.csv',
+    'All data from 1987-2018':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/data_1987_2018.csv',
+    'All data monthly':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/monthly_combined_data.csv',
+    'CPI data':'https://raw.githubusercontent.com/badranyoussef/bi-exam-project-stock/refs/heads/main/datasets/cpi_data.csv'
+}
+
+# Add a dropdown to choose a file
+st.markdown("**Or select a file to explore**")
+st.write("Here you can see original and cleaned data files, we have used to work out our model.")
+selected_title = st.selectbox("Select a file to load", list(file_list.keys()), None)
+is_file_chosen = False
 if uploaded_file is not None:
+    # Load the uploaded file
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+    elif uploaded_file.name.endswith('.xlsx'):
+        df = pd.read_excel(uploaded_file)
+    is_file_chosen = True
+elif selected_title is not None:
+    # If no file is uploaded, load the selected predefined file
+    selected_file = file_list[selected_title]
+
+    if selected_file.endswith('.csv'):
+        df = pd.read_csv(selected_file)
+    elif selected_file.endswith('.xlsx'):
+        df = pd.read_excel(selected_file)
+    is_file_chosen = True
+
+if is_file_chosen is True:
     # Read the CSV file
-    df = pd.read_csv(uploaded_file)
+    #df = pd.read_csv(uploaded_file)
 
     # Show the first few rows of the DataFrame
     st.write("### Data Preview")
@@ -91,3 +130,5 @@ if uploaded_file is not None:
         # Placeholder for confusion matrix - requires actual and predicted labels
         st.write("### Confusion Matrix")
         st.image('../app/images/confusion matrix.png')
+else:
+    st.warning("You need to upload or select a file to see something here...")
