@@ -51,7 +51,7 @@ st.markdown("""
     * Russell 2000
     * Gold
     * Oil
-    * Macroeconomic data
+    * Macroeconomic data (several)
 """)
 
 # Kort om predictions

@@ -1,12 +1,13 @@
 import streamlit as st
 import joblib
+import pandas as pd
 import numpy as np
 
 def load_model(stock):
     model_mapping = {
         "SP500": '../models/dt_model_sp500.pkl',
         "RUSSELL2000": '../models/dt_model_russell2000.pkl',
-        "C25": '../models/model_c25.pkl'
+        #"C25": '../models/model_c25.pkl'
     }
     
     if stock in model_mapping:
@@ -18,10 +19,10 @@ def load_model(stock):
 
 # Function to get user input based on selected stock index
 def get_input_values(stock):
-    if stock == "C25":
-        return get_c25_input()
-    else:
-        return get_other_stock_input(stock)
+    # if stock == "C25":
+    #     return get_c25_input()
+    # else:
+    return get_other_stock_input(stock)
 
 def get_other_stock_input(stock):
     cpi = st.slider("Set CPI", 100, 1000, 110) 
@@ -39,23 +40,23 @@ def get_other_stock_input(stock):
     
     return np.array([[interest, unemployment, inflation, cpi, flagged_value]])
 
-def get_c25_input():
-    LAST_CLOSE_SP500 = st.slider("Set CLOSE value for SP500", 0, 6500, 5000)
-    Open = st.slider("Set Open value for SP500", 0, 6500, 5000)
-    High_sp500 = st.slider("Set HIGH value for SP500", 0, 6500, 5000)
-    Low_sp500 = st.slider("Set LOW value for SP500", 0, 6500, 5000)
-    CHANGE_SP500 = st.slider("Set CHANGE value for SP500", 0, 6500, 5000)
+# def get_c25_input():
+#     LAST_CLOSE_SP500 = st.slider("Set CLOSE value for SP500", 0, 6500, 5000)
+#     Open = st.slider("Set Open value for SP500", 0, 6500, 5000)
+#     High_sp500 = st.slider("Set HIGH value for SP500", 0, 6500, 5000)
+#     Low_sp500 = st.slider("Set LOW value for SP500", 0, 6500, 5000)
+#     CHANGE_SP500 = st.slider("Set CHANGE value for SP500", 0, 6500, 5000)
 
-    LAST_CLOSE_C25 = st.slider("Set LAST CLOSE value for C25", 0, 6500, 5000)
-    CHANGE_C25 = st.slider("Set CHANGE value for C25", 0, 6500, 5000)
-    High_c25 = st.slider("Set HIGH value for C25", 0, 6500, 5000)
-    Low_c25 = st.slider("Set LOW value for C25", 0, 6500, 5000)
+#     LAST_CLOSE_C25 = st.slider("Set LAST CLOSE value for C25", 0, 6500, 5000)
+#     CHANGE_C25 = st.slider("Set CHANGE value for C25", 0, 6500, 5000)
+#     High_c25 = st.slider("Set HIGH value for C25", 0, 6500, 5000)
+#     Low_c25 = st.slider("Set LOW value for C25", 0, 6500, 5000)
 
-    flagged = st.radio("Is the C25 stock rising in the current month?", ("Yes", "No"))
-    flagged_value = 1 if flagged == "Yes" else 0
+#     flagged = st.radio("Is the C25 stock rising in the current month?", ("Yes", "No"))
+#     flagged_value = 1 if flagged == "Yes" else 0
 
-    return np.array([[LAST_CLOSE_SP500, Open, High_sp500, Low_sp500, CHANGE_SP500,
-                      LAST_CLOSE_C25, CHANGE_C25, High_c25, Low_c25, flagged_value]])
+#     return np.array([[LAST_CLOSE_SP500, Open, High_sp500, Low_sp500, CHANGE_SP500,
+#                       LAST_CLOSE_C25, CHANGE_C25, High_c25, Low_c25, flagged_value]])
 
 # Streamlit app starts here
 st.markdown("# Predict Market Movement")
@@ -63,7 +64,7 @@ st.markdown("Here you can try our ML model, which we have trained to predict the
 
 # Choose stock index
 st.markdown("**Which stock index will you predict?**")
-stock = st.selectbox("Choose stock index", ('C25', "SP500", "RUSSELL2000"))
+stock = st.selectbox("Choose stock index", ("SP500", "RUSSELL2000"))
 
 # Info section
 st.markdown('''
@@ -88,3 +89,57 @@ if st.button("Predict"):
         st.success(f"The model predicts that the {stock} will go UP next month!")
     else:
         st.warning(f"The model predicts that the {stock} will go DOWN next month.")
+
+st.subheader("Model Selection and Results")
+st.write("Working with time series data, we needed to be aware of this when training model.")
+st.markdown("""
+    * DescissionTreeClassifier ()
+    * RandomForrestClassifier
+    * GaussianNB
+    * (Neural Networks)
+""")
+
+st.subheader("Cross Validation")
+st.code("""
+    def evaluate_model(model, X, y, max_splits):
+        best_n_splits = None
+        best_accuracy = 0
+        results = {}
+
+        # Test different n_splits values
+        for n_splits in range(2, max_splits):  # Testing from 2 to max_splits
+            tscv = TimeSeriesSplit(n_splits=n_splits)
+            accuracies = []
+
+            for train_index, test_index in tscv.split(X):
+                X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+                y_train, y_test = y.iloc[train_index], y.iloc[test_index]
+
+                # Train the model
+                model.fit(X_train, y_train)
+
+                # Predict on test data
+                y_pred = model.predict(X_test)
+
+                # Evaluate the model
+                accuracy = accuracy_score(y_test, y_pred)
+                accuracies.append(accuracy)
+
+            # Calculate the average accuracy for this n_splits
+            average_accuracy = np.mean(accuracies)
+            results[n_splits] = average_accuracy
+
+            # Update the best n_splits if the current one is better
+            if average_accuracy > best_accuracy:
+                best_accuracy = average_accuracy
+                best_n_splits = n_splits
+
+        return best_n_splits, best_accuracy
+""")
+
+st.subheader("Descission Tree Classifier")
+df = pd.DataFrame({
+    'Pros':['Easy to understand - straight forward', 'Ideal for visualization', 'Nomalization not necessary', 'Handle numerical and catogorical data', 'Resistant to outliers'],
+    'Cons':['Overfitting', 'Greedy model (small changes big differences)', 'Not good for continues variables', 'Biased towards imbalanced data', '']
+})
+st.dataframe(df, hide_index=True, use_container_width=True)
