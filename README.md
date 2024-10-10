@@ -1,5 +1,5 @@
 # Business Intelligence Exam Project
-*By: **Youssef Badran** () and **Lasse Kjær Hauerberg** ()*
+*By: **Youssef Badran** (cph-yb48@cphbusiness.dk) and **Lasse Kjær Hauerberg** (cph-lh225@cphbusiness.dk)*
 
 In this file you can find info about our exam project. The problem statement, and a guide to this repository.
 
